@@ -2,43 +2,123 @@
 <html>
 <head>
     <title>Mobile template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="mobile.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+    <script src="http://code.jquery.com/jquery-1.5.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <style>
+        #map_canvas {
+            height: 80%;
+            width: 80%
+        }
+    </style>
+    
 </head>
 <body>
-<div class="container">
-    <div class="info">
-        <h2>Practice</h2>
-        <div class="datetime">
+
+<script type="text/javascript">
+    $('div#map').live('pagecreate',function(event, ui){
+        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var myOptions = {
+          zoom: 8,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map_canvas = document.getElementById("map_canvas");
+        var map = new google.maps.Map(map_canvas, myOptions);
+        google.maps.event.trigger(map,'resize');
+    });
+</script>
+
+<!-- Start of first page -->
+<div data-role="page" id="info">
+
+	<div data-role="header">
+		<h1>Practice</h1>
+	</div>
+
+	<div data-role="content">	
+		<div class="datetime">
             <span class="date">2011-01-01 (Mon)</span><span class="time">17:30 &ndash; 19:00</span>
         </div>
         <div class="location">
-            Yliopistonkatu 1 33100 Tampere, Finland&nbsp;(<a href="http://maps.google.com/" class="location link">On map</a>)
+            Yliopistonkatu 1 33100 Tampere, Finland&nbsp;<a href="#map">On map</a>
         </div>
-    </div>
-    <div class="buttons">
-        <form>
-            <input type="submit" class="button answer yes" value="YES"/>
-            <input type="submit" class="button answer no" value="NO"/>
-        </form>
-    </div>
-    <!-- Load with AJAX? -->
-    <div class="details">
-        <ul>
-            <li>Doing something</li>
-            <li>Something else</li>
-        </ul>
-    </div>
-    <!-- Load with AJAX? -->
-    <h3>Who else is participating?</h3>
-    <div>
-        <ul class="participants">
-            <li>Ahto Simakuutio <span class="yes">Yes</span></li>
-            <li>Matti Meikäläinen <span class="no">No</span></li>
-            <li>Maija Meikäläinen <span class="unknown">Don't know yet</span></li>
-        </ul>
-    </div>
+        
+        <div class="buttons">
+            <form>
+                <input type="submit" class="button answer yes" value="YES"/>
+                <input type="submit" class="button answer no" value="NO"/>
+            </form>
+            <a href="#participants" class="button answer" data-role="button" data-inline="true">Who's going?</a>	
+        </div>
+        
+        
+	</div>
+
+	<div data-role="footer">
+		<h4><a href="#other">Other events</a></h4>
+	</div>
 </div>
+
+
+
+<div data-role="page" id="participants">
+
+	<div data-role="header">
+		<h1>Participants</h1>
+	</div>
+
+	<div data-role="content">	
+		<ul class="ui-listview" data-role="listview">
+            <li class="ui-li ui-li-static ui-body-c">Ahto Simakuutio <p class="ui-li-aside ui-li-desc">Yes</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Matti Meikäläinen <p class="ui-li-aside ui-li-desc">No</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Maija Meikäläinen <p class="ui-li-aside ui-li-desc">No answer</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Ahto Simakuutio <p class="ui-li-aside ui-li-desc">Yes</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Matti Meikäläinen <p class="ui-li-aside ui-li-desc">No</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Maija Meikäläinen <p class="ui-li-aside ui-li-desc">No answer</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Ahto Simakuutio <p class="ui-li-aside ui-li-desc">Yes</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Matti Meikäläinen <p class="ui-li-aside ui-li-desc">No</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Maija Meikäläinen <p class="ui-li-aside ui-li-desc">No answer</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Ahto Simakuutio <p class="ui-li-aside ui-li-desc">Yes</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Matti Meikäläinen <p class="ui-li-aside ui-li-desc">No</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Maija Meikäläinen <p class="ui-li-aside ui-li-desc">No answer</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Ahto Simakuutio <p class="ui-li-aside ui-li-desc">Yes</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Matti Meikäläinen <p class="ui-li-aside ui-li-desc">No</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Maija Meikäläinen <p class="ui-li-aside ui-li-desc">No answer</p></li>
+        </ul>
+	</div>
+
+	<div data-role="footer">
+		<h4><a href="#other">Other events</a></h4>
+	</div>
+</div>
+
+
+
+<div data-role="page" id="map">
+
+	<div data-role="header">
+		<h1>Location</h1>
+	</div>
+
+	<div data-role="content">	
+		<div class="datetime">
+            <span class="date">2011-01-01 (Mon)</span><span class="time">17:30 &ndash; 19:00</span>
+        </div>
+        <div class="location">
+            Yliopistonkatu 1 33100 Tampere, Finland
+        </div>
+        <div id="map_canvas" style="width:100%; height:100%;"></div>
+	</div>
+
+	<div data-role="footer">
+		<h4><a href="#other">Other events</a></h4>
+	</div>
+</div>
+
 </body>
 </html>

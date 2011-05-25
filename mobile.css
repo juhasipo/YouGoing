@@ -1,7 +1,3 @@
-div.container {
-    width: 90%;
-    margin: 0 auto;
-}
 div.info {
 }
 
@@ -27,66 +23,4 @@ input.button {
     border-radius: 10px;
 }
 
-input.button.answer {
-    margin-top: 5px;
-    height: 4em;
-    width: 7em;
-    clear: both;
-}
 
-input.yes {
-    background: -webkit-gradient(linear, left top, left bottom, from(#090), to(#0c0));
-    background: -moz-linear-gradient(top,  #090,  #0c0);
-    background-color: #0f0;
-    border: solid 2px #060;
-    color: #ddd;
-    font-weight: bold;
-}
-input.yes:hover {
-    background: -webkit-gradient(linear, left top, left bottom, from(#090), to(#0d0));
-    background: -moz-linear-gradient(top,  #090,  #0d0);
-    background-color: #0f0;
-    border: solid 2px #060;
-    color: #fff;
-    font-weight: bolder;
-}
-input.yes:active {
-    background: -webkit-gradient(linear, left top, left bottom, from(#0b0), to(#0f0));
-    background: -moz-linear-gradient(top,  #0b0,  #0f0);
-    background-color: #0f0;
-    border: solid 2px #060;
-    color: #fff;
-    font-weight: bolder;
-}
-
-input.no {
-    background: -webkit-gradient(linear, left top, left bottom, from(#900), to(#c00));
-    background: -moz-linear-gradient(top,  #900,  #c00);
-    background-color: #f00;
-    border: solid 2px #600;
-    color: #ddd;
-    font-weight: bold;
-}
-input.no:hover {
-    background: -webkit-gradient(linear, left top, left bottom, from(#900), to(#d00));
-    background: -moz-linear-gradient(top,  #900,  #d00);
-    background-color: #f00;
-    border: solid 2px #600;
-    color: #fff;
-    font-weight: bolder;
-}
-input.no:active {
-    background: -webkit-gradient(linear, left top, left bottom, from(#b00), to(#f00));
-    background: -moz-linear-gradient(top,  #b00,  #f00);
-    background-color: #f00;
-    border: solid 2px #600;
-    color: #fff;
-    font-weight: bolder;
-}
-
-ul.participants li span.yes {
-    font-weight: bold;
-}
-ul.participants li span.no {
-    font-weight: bold;
-}
