@@ -1,0 +1,26 @@
+div.info {
+}
+
+div.info span.date {
+    margin-left: 5px;
+    font-weight: bold;
+}
+div.info span.time {
+    margin-left: 5px;
+    font-weight: bold;
+}
+div.info div.location {
+    margin-left: 5px;
+}
+
+div.buttons {
+    padding-top: 20px;
+    width: 50%;
+    margin: 0px auto;
+}
+
+input.button {
+    border-radius: 10px;
+}
+
+

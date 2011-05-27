@@ -22,5 +22,5 @@ def check_password_complexity(password):
     else:
         return False
     
-def get_logged_in_user():
+def get_logged_in_user(request):
     return None

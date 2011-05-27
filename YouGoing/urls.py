@@ -2,6 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from yougoing.views import mobile
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -15,5 +16,6 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     
-    url(r'^$', 'yougoing.views.index'),
+    url(r'^$', mobile.MobileView(), name="index"),
+    url(r'^mobile/(?P<event_name>\w+)$', mobile.MobileView(), name="mobile"),
 )

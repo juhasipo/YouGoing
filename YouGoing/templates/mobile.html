@@ -1,0 +1,92 @@
+﻿{% extends "layout/mobile.html" %}
+{% load i18n %}
+
+{% block content %}
+<!-- Start of first page -->
+<div data-role="page" id="info">
+
+	<div data-role="header">
+		<h1>{{ event_name }}</h1>
+	</div>
+
+	<div data-role="content">	
+		<div class="datetime">
+            <span class="date">2011-01-01 (Mon)</span><span class="time">17:30 &ndash; 19:00</span>
+        </div>
+        <div class="location">
+            Yliopistonkatu 1 33100 Tampere, Finland&nbsp;<a href="#map">On map</a>
+        </div>
+        
+        <div class="buttons">
+            <form>
+                <input type="submit" class="button answer yes" value="YES"/>
+                <input type="submit" class="button answer no" value="NO"/>
+            </form>
+            <a href="#participants" class="button answer" data-role="button" data-inline="true">Who's going?</a>	
+        </div>
+        
+        
+	</div>
+
+	<div data-role="footer">
+		<h4><a href="create_event.html" target="_self">Create New</a></h4>
+	</div>
+</div>
+
+
+
+<div data-role="page" id="participants">
+
+	<div data-role="header">
+		<h1>Participants</h1>
+	</div>
+
+	<div data-role="content">	
+		<ul class="ui-listview" data-role="listview">
+            <li class="ui-li ui-li-static ui-body-c">Ahto Simakuutio <p class="ui-li-aside ui-li-desc">Yes</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Matti Meikäläinen <p class="ui-li-aside ui-li-desc">No</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Maija Meikäläinen <p class="ui-li-aside ui-li-desc">No answer</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Ahto Simakuutio <p class="ui-li-aside ui-li-desc">Yes</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Matti Meikäläinen <p class="ui-li-aside ui-li-desc">No</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Maija Meikäläinen <p class="ui-li-aside ui-li-desc">No answer</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Ahto Simakuutio <p class="ui-li-aside ui-li-desc">Yes</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Matti Meikäläinen <p class="ui-li-aside ui-li-desc">No</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Maija Meikäläinen <p class="ui-li-aside ui-li-desc">No answer</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Ahto Simakuutio <p class="ui-li-aside ui-li-desc">Yes</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Matti Meikäläinen <p class="ui-li-aside ui-li-desc">No</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Maija Meikäläinen <p class="ui-li-aside ui-li-desc">No answer</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Ahto Simakuutio <p class="ui-li-aside ui-li-desc">Yes</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Matti Meikäläinen <p class="ui-li-aside ui-li-desc">No</p></li>
+            <li class="ui-li ui-li-static ui-body-c">Maija Meikäläinen <p class="ui-li-aside ui-li-desc">No answer</p></li>
+        </ul>
+	</div>
+
+	<div data-role="footer">
+		<h4><a href="#other">Other events</a></h4>
+	</div>
+</div>
+
+
+
+<div data-role="page" id="map">
+
+	<div data-role="header">
+		<h1>Location</h1>
+	</div>
+
+	<div data-role="content">	
+		<div class="datetime">
+            <span class="date">2011-01-01 (Mon)</span><span class="time">17:30 &ndash; 19:00</span>
+        </div>
+        <div class="location">
+            Yliopistonkatu 1 33100 Tampere, Finland
+        </div>
+        <div id="map_canvas" style="width:100%; height:100%;"></div>
+	</div>
+
+	<div data-role="footer">
+		<h4><a href="#other">Other events</a></h4>
+	</div>
+</div>
+
+{% endblock %}
