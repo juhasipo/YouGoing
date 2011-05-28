@@ -33,13 +33,13 @@ class BaseView(object):
         self._user = get_logged_in_user(request)
         try:
             if request.method == "GET":
-                return self.get(request, *args, **kwargs)
+                return self._get(request, *args, **kwargs)
             elif request.method == "POST":
-                return self.post(request, *args, **kwargs)
+                return self._post(request, *args, **kwargs)
             elif request.method == "PUT":
-                return self.post(request, *args, **kwargs)
+                return self._post(request, *args, **kwargs)
             elif request.method == "DELETE":
-                return self.post(request, *args, **kwargs)
+                return self._post(request, *args, **kwargs)
             else:
                 print "Unknown method: %s" % (request.method)
                 return HttpResponseNotFound()
@@ -64,26 +64,26 @@ class BaseView(object):
     def get_user(self):
         return self._user
             
-    def get(self, request):
+    def _get(self, request):
         print "GET not implemented"
         return HttpResponseNotFound()
-    def post(self, request):
+    def _post(self, request):
         print "POST not implemented"
         return HttpResponseNotFound()
-    def put(self, request):
+    def _put(self, request):
         print "PUT not implemented"
         return HttpResponseNotFound()
-    def delete(self, request):
+    def _delete(self, request):
         print "DELETE not implemented"
         return HttpResponseNotFound()
     
     def render_template(self, template, context, response=None, errors=[], warnings=[]):
         """
-            @param template (string): Name of the template
-            @param context (dictionery): Context for the template as dictionary
-            @param response (Response): Response object to use, Default: HttpResponse
-            @param errors (list): List of errors as string
-            @param warnings (list): List of warnings as string
+            @param template: Name of the template
+            @param context: Context for the template as dictionary
+            @param response: Response object to use, Default: HttpResponse
+            @param errors: List of errors as string
+            @param warnings: List of warnings as string
         """
         t = loader.get_template(template)
         context["errors"] = errors
@@ -93,7 +93,6 @@ class BaseView(object):
         context.update(csrf(self._request))
         c = RequestContext(self._request, context)
         
-            
         if response == None:
             return HttpResponse(t.render(c))
         else:

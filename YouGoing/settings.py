@@ -94,6 +94,13 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
+AUTHENTICATION_BACKENDS = ('yougoing.security.authentication.backend.Sha256Auth',)
+HASH_ROUNDS = 100
+STATIC_SALT = "/gu503RlKgIOUIObuyyuyv#4M5=7fhG#gf"
+SALT_MIN_LENGTH = 256
+SALT_MAX_LENGTH = 512
+
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -106,6 +113,7 @@ MIDDLEWARE_CLASSES = (
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 ROOT_URLCONF = 'YouGoing.urls'
+
 
 # To be used later
 #AUTH_PROFILE_MODULE = 'project.AdditionalUserData'
