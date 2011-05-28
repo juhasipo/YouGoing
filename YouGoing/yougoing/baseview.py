@@ -33,13 +33,13 @@ class BaseView(object):
         self._user = get_logged_in_user(request)
         try:
             if request.method == "GET":
-                return self._get(request, *args, **kwargs)
+                return self.get(request, *args, **kwargs)
             elif request.method == "POST":
-                return self._post(request, *args, **kwargs)
+                return self.post(request, *args, **kwargs)
             elif request.method == "PUT":
-                return self._post(request, *args, **kwargs)
+                return self.post(request, *args, **kwargs)
             elif request.method == "DELETE":
-                return self._post(request, *args, **kwargs)
+                return self.post(request, *args, **kwargs)
             else:
                 print "Unknown method: %s" % (request.method)
                 return HttpResponseNotFound()
@@ -64,16 +64,16 @@ class BaseView(object):
     def get_user(self):
         return self._user
             
-    def _get(self, request):
+    def get(self, request):
         print "GET not implemented"
         return HttpResponseNotFound()
-    def _post(self, request):
+    def post(self, request):
         print "POST not implemented"
         return HttpResponseNotFound()
-    def _put(self, request):
+    def put(self, request):
         print "PUT not implemented"
         return HttpResponseNotFound()
-    def _delete(self, request):
+    def delete(self, request):
         print "DELETE not implemented"
         return HttpResponseNotFound()
     
