@@ -14,35 +14,67 @@ from django.contrib import messages
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
 
-# Simple E-mail address validation
-# not compatible with RFC 822 because it requires HUGE
-# reg exp, but "should" be enough
-# TODO: Use Django's own EmailField, if ever deploy for real use
-    
-
 class BaseView(object):
-    def __call__(self, request, *args, **kwargs):
+    def __new__(cls, request, *args, **kwargs):
         """
-            Call trough method to enable use of methods as
-            handlers instead of checking request.method
-            in each handler function. Also enables default
-            handler for unused methods which the user doesn't
-            have to implement for each handler.
+            Called when Django has resolved URL and
+            calls the view. Creates new view object
+            and handles request using that new object
+        """
+        view = cls._new_object_by_type(request, *args, **kwargs)
+        return view.handle_request(request, *args, **kwargs)
+    
+    @classmethod
+    def _new_object_by_type(cls, *args, **kwargs):
+        """
+            Creates new instance of the given object,
+            initializes and returns it.
+        """
+        obj = object.__new__(cls)
+        obj.__init__(*args, **kwargs)
+        return obj
+    
+    def __init__(self, *args, **kwargs):
+        self._request = None
+        self._user = None
+        self.context = {}
+        self.errors = []
+        self.warnings = []
+    
+    def add_to_context(self, key, value):
+        self.context[key] = value
+    def set_errors(self, error_list):
+        self.errors = error_list
+    def add_to_errors(self, error):
+        self.error.append(error)
+    def set_warnings(self, warning_list):
+        self.errors = warning_list
+    def add_to_warnings(self, warning):
+        self.error.append(warning)
+    
+    
+    def handle_request(self, request, *args, **kwargs):
+        """
+            Handles the given request. Dispatches the
+            request to the correct handler method. Also
+            sets user object to current user if a user
+            has logged in.
         """
         self._request = request
         self._user = get_logged_in_user(request)
         try:
             if request.method == "GET":
-                return self.get(request, *args, **kwargs)
+                self.get(request, *args, **kwargs)
             elif request.method == "POST":
-                return self.post(request, *args, **kwargs)
+                self.post(request, *args, **kwargs)
             elif request.method == "PUT":
-                return self.post(request, *args, **kwargs)
+                self.post(request, *args, **kwargs)
             elif request.method == "DELETE":
-                return self.post(request, *args, **kwargs)
+                self.post(request, *args, **kwargs)
             else:
                 print "Unknown method: %s" % (request.method)
                 return HttpResponseNotFound()
+            return self.handle_response()
         except ForbiddenView, e:
             if self.get_user() == None:
                 request.session['redirect_after_login'] = request.build_absolute_uri()
@@ -76,6 +108,22 @@ class BaseView(object):
     def delete(self, request):
         print "DELETE not implemented"
         return HttpResponseNotFound()
+    
+    def handle_response(self):
+        if not hasattr(self, "template"):
+            raise Exception("No template set")
+        
+        if not hasattr(self, "response") == None:
+            self.response = HttpResponse
+        
+        self.context["errors"] = self.errors
+        self.context["warnings"] = self.warnings
+        self.context["user"] = self.get_user()
+        
+        t = loader.get_template(self.template)
+        self.context.update(csrf(self._request))
+        c = RequestContext(self._request, self.context)
+        return self.response(t.render(c))
     
     def render_template(self, template, context, response=None, errors=[], warnings=[]):
         """
