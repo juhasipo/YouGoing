@@ -13,6 +13,7 @@ from yougoing.utils.security import get_logged_in_user
 from django.contrib import messages
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 
 class BaseView(object):
     def __new__(cls, request, *args, **kwargs):
@@ -63,6 +64,11 @@ class BaseView(object):
         self._request = request
         self._user = get_logged_in_user(request)
         try:
+            if hasattr(self, "login_required") and request.method in self.login_required:
+                if not request.user.is_authenticated():
+                    from django.contrib.auth.views import redirect_to_login
+                    return redirect_to_login(request.get_full_path(), settings.LOGIN_URL, settings.REDIRECT_FIELD_NAME)
+            
             if request.method == "GET":
                 self.get(request, *args, **kwargs)
             elif request.method == "POST":
@@ -110,6 +116,8 @@ class BaseView(object):
         return HttpResponseNotFound()
     
     def handle_response(self):
+        if hasattr(self, "redirect_to") and self.redirect_to != None:
+            return HttpResponseRedirect(self.redirect_to)
         if not hasattr(self, "template"):
             raise Exception("No template set")
         

@@ -1,0 +1,14 @@
+{% extends "layout/desktop.html" %}
+{% load i18n %}
+
+{% block content %}
+<p>
+	<table>
+		<form action="{% url login %}" method="post">{% csrf_token %}
+		{{ form.as_table }}
+		<input type="hidden" name="next" value="{{next}}" />
+		<input type="submit" value="Login" />
+		</form>
+	</table>
+</p>
+{% endblock %}
