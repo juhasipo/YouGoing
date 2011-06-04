@@ -14,7 +14,19 @@ from django.contrib import messages
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
 
+
+
 class BaseView(object):
+    """
+        Base class for views. You can implement get, post, put and
+        delete methods to handle corresponding HTTP requests. Set
+        template property before returning from the methods or
+        define it in the class definition.
+        
+        You can also change returned response by setting the class
+        for response property.
+    """
+    
     def __new__(cls, request, *args, **kwargs):
         """
             Called when Django has resolved URL and
@@ -22,7 +34,7 @@ class BaseView(object):
             and handles request using that new object
         """
         view = cls._new_object_by_type(request, *args, **kwargs)
-        return view.handle_request(request, *args, **kwargs)
+        return view._handle_request(request, *args, **kwargs)
     
     @classmethod
     def _new_object_by_type(cls, *args, **kwargs):
@@ -53,7 +65,7 @@ class BaseView(object):
         self.error.append(warning)
     
     
-    def handle_request(self, request, *args, **kwargs):
+    def _handle_request(self, request, *args, **kwargs):
         """
             Handles the given request. Dispatches the
             request to the correct handler method. Also
@@ -74,7 +86,7 @@ class BaseView(object):
             else:
                 print "Unknown method: %s" % (request.method)
                 return HttpResponseNotFound()
-            return self.handle_response()
+            return self._handle_response()
         except ForbiddenView, e:
             if self.get_user() == None:
                 request.session['redirect_after_login'] = request.build_absolute_uri()
@@ -109,7 +121,7 @@ class BaseView(object):
         print "DELETE not implemented"
         return HttpResponseNotFound()
     
-    def handle_response(self):
+    def _handle_response(self):
         if not hasattr(self, "template"):
             raise Exception("No template set")
         
