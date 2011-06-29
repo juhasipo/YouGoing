@@ -117,8 +117,9 @@ ROOT_URLCONF = 'YouGoing.urls'
 
 # To be used later
 #AUTH_PROFILE_MODULE = 'project.AdditionalUserData'
-#LOGIN_URL = '/login/'
-#LOGOUT_URL = '/logout/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+REDIRECT_FIELD_NAME = 'next'
 
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
 

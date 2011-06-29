@@ -13,20 +13,9 @@ from yougoing.utils.security import get_logged_in_user
 from django.contrib import messages
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
-
-
+from django.contrib.auth.models import User
 
 class BaseView(object):
-    """
-        Base class for views. You can implement get, post, put and
-        delete methods to handle corresponding HTTP requests. Set
-        template property before returning from the methods or
-        define it in the class definition.
-        
-        You can also change returned response by setting the class
-        for response property.
-    """
-    
     def __new__(cls, request, *args, **kwargs):
         """
             Called when Django has resolved URL and
@@ -34,7 +23,7 @@ class BaseView(object):
             and handles request using that new object
         """
         view = cls._new_object_by_type(request, *args, **kwargs)
-        return view._handle_request(request, *args, **kwargs)
+        return view.handle_request(request, *args, **kwargs)
     
     @classmethod
     def _new_object_by_type(cls, *args, **kwargs):
@@ -65,7 +54,7 @@ class BaseView(object):
         self.error.append(warning)
     
     
-    def _handle_request(self, request, *args, **kwargs):
+    def handle_request(self, request, *args, **kwargs):
         """
             Handles the given request. Dispatches the
             request to the correct handler method. Also
@@ -75,6 +64,11 @@ class BaseView(object):
         self._request = request
         self._user = get_logged_in_user(request)
         try:
+            if hasattr(self, "login_required") and request.method in self.login_required:
+                if not request.user.is_authenticated():
+                    from django.contrib.auth.views import redirect_to_login
+                    return redirect_to_login(request.get_full_path(), settings.LOGIN_URL, settings.REDIRECT_FIELD_NAME)
+            
             if request.method == "GET":
                 self.get(request, *args, **kwargs)
             elif request.method == "POST":
@@ -86,7 +80,7 @@ class BaseView(object):
             else:
                 print "Unknown method: %s" % (request.method)
                 return HttpResponseNotFound()
-            return self._handle_response()
+            return self.handle_response()
         except ForbiddenView, e:
             if self.get_user() == None:
                 request.session['redirect_after_login'] = request.build_absolute_uri()
@@ -121,7 +115,9 @@ class BaseView(object):
         print "DELETE not implemented"
         return HttpResponseNotFound()
     
-    def _handle_response(self):
+    def handle_response(self):
+        if hasattr(self, "redirect_to") and self.redirect_to != None:
+            return HttpResponseRedirect(self.redirect_to)
         if not hasattr(self, "template"):
             raise Exception("No template set")
         
@@ -131,6 +127,8 @@ class BaseView(object):
         self.context["errors"] = self.errors
         self.context["warnings"] = self.warnings
         self.context["user"] = self.get_user()
+        environment = "mobile" if self._request.mobile else "mobile"
+        self.context["layout"] = "layout/%s.html" % environment
         
         t = loader.get_template(self.template)
         self.context.update(csrf(self._request))

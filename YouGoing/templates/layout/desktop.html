@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	    <title>{% block page_title %}YouGoing{% endblock %}</title>
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		{% block meta %}{% endblock %}
+		<link href="{% url index %}static/css/yougoing.css" rel="stylesheet"/>
+	    <link href="{% url index %}static/css/desktop.css" rel="stylesheet"/>
+		{% block stylesheets%}{% endblock %}
+		
+	    <script type="text/javascript" src="{% url index %}static/js/jquery-1.6.1.js"></script>
+	    <script type="text/javascript" src="{% url index %}static/js/jquery-ui-1.8.13.custom.min.js"></script>
+	    {% block scripts %}{% endblock %}
+	</head>
+	<body>
+		<div class="page">
+			<div class="header">
+				<h1>YouGoing</h1>
+			</div>
+			<div class="content">
+			{% block content %}
+			{% endblock %}
+			</div>
+			<div class="footer">
+				Copyright &copy; YouGoing 2011
+			</div>
+		</div>
+	</body>
+</html>

@@ -4,8 +4,8 @@ div.page {
 }
 
 div.content {
-	padding-left: 0;
-	padding-right: 0;
+	padding-left: 1em;
+	padding-right: 1em;
 }
 
 
@@ -15,15 +15,12 @@ div.content {
 
 form {
 	margin: 0 auto;
-	width: 100%;
-	overflow: auto;
+	width: 50%;
 }
 
 form ul {
 	list-style-type: none;
 	clear: both;
-	overflow: auto;
-	padding-left: 0;
 }
 
 form ul li.error input {
@@ -38,33 +35,23 @@ form ul li.required label {
 form ul li label {
 	float: left;
 	width: 100px;
-	font-size: 18px;
-	text-align: left;
+	font-size: 14px;
+	text-align: right;
 }
-
 form ul li {
 	padding-top: 5px;
-	overflow: auto;
+	clear: both;
 }
 
 form ul li input {
+	margin-left: 10px;
 	float: left;
-	width: 90%;
-	height: 48px;
-	font-size: 30px;
-}
-
-form > input {
-	height: 50px;
-	width: 125px;
-	clear: both;
+	width: 15em;
 }
 
 form ul ul.errorlist {
 	padding-top: 1.5em;
 	color: red;
 	font-size: 12px;
-	font-family: sans-serif;
+	font-style: sans-serif;
 }
-
-

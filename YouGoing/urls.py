@@ -2,7 +2,8 @@ from django.conf.urls.defaults import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from yougoing.views import mobile
+from yougoing.views import mobile, calendar
+from yougoing.views import authentication
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -18,4 +19,11 @@ urlpatterns = patterns('',
     
     url(r'^$', mobile.MobileView, name="index"),
     url(r'^mobile/(?P<event_name>\w+)$', mobile.MobileView, name="mobile"),
+    url(r'^calendar/$', calendar.CalendarView, name="calendar"),
+    url(r'^calendar/(?P<id>\d+)$', calendar.CalendarEventsView, name="calendar_events"),
+    
+    # User management
+    url(r'^login/$', authentication.DoLogin, name="login"),
+    url(r'^logout/$', authentication.DoLogout, name="logout"),
+    #url(r'^register/$', 'project.views.register'),
 )

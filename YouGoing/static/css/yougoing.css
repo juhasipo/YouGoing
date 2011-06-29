@@ -1,0 +1,11 @@
+div.header h1 {
+	font-family: sans-serif;
+}
+
+div.header {
+	border-bottom: solid black 1px;
+}
+
+div.footer {
+	border-top: solid black 1px;
+}
