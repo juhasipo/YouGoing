@@ -4,6 +4,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from yougoing.views import mobile, calendar
 from yougoing.views import authentication
+from yougoing.views import events
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -21,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^mobile/(?P<event_name>\w+)$', mobile.MobileView, name="mobile"),
     url(r'^calendar/$', calendar.CalendarView, name="calendar"),
     url(r'^calendar/(?P<id>\d+)$', calendar.CalendarEventsView, name="calendar_events"),
+    url(r'^event/new$', events.CalendarEventsView, name="new_calendar_event"),
     
     # User management
     url(r'^login/$', authentication.DoLogin, name="login"),
