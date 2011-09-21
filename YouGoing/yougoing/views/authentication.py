@@ -17,7 +17,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 class DoLogin(BaseView):
-    template = 'login.html'
+    template = 'login.djhtml'
     
     def get(self, request):
         # Logout first
@@ -83,5 +83,5 @@ def register(request):
     else:
         form = UserCreationForm() # An unbound form
 
-    return render_page('register.html', request, {'form': form }, True)
+    return render_page('register.djhtml', request, {'form': form }, True)
 '''

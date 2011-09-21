@@ -5,13 +5,13 @@ Created on 16.6.2011
 '''
 from yougoing.baseview import BaseView
 class CalendarView(BaseView):
-    template = "calendar.html"
+    template = "calendar.djhtml"
     def get(self, request):
         pass
     
     
 class CalendarEventsView(BaseView):
-    template = "formats/json.html"
+    template = "formats/json.djhtml"
     def get(self, request, id):
         start_time = request.GET['start']
         end_time = request.GET['end']

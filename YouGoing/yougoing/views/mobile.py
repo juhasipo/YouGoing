@@ -5,18 +5,12 @@ Created on 27.5.2011
 '''
 
 from yougoing.baseview import BaseView
-
-def test_view(request):
-    print "A"
-    for i in xrange(0,2**28):
-        pass
-    print "B"
     
 class MobileView(BaseView):
-    template = "mobile.html"
+    template = "mobile.djhtml"
     login_required = ["GET", "POST"]
     
-    def get(self, request, event_name):
+    def get(self, request, event_name = "New event"):
         if request.mobile:
             p = "Mobile"
         else:

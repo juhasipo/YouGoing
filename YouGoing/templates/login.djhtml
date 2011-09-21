@@ -7,6 +7,9 @@
 		{{ form.as_ul }}
 		</ul>
 		<input type="hidden" name="next" value="{{next}}" />
-		<input type="submit" value="Login" />
+		<div class="form-actions bottom">
+			<input type="submit" value="Login" />
+			<br class="clear"/>
+		</div>
 	</form>
 {% endblock %}
