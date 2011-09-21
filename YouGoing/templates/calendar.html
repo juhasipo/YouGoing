@@ -1,0 +1,91 @@
+{% extends "layout/desktop.html" %}
+{% load i18n %}
+
+{% block stylesheets%}
+<link href="{% url index %}static/css/fullcalendar.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% url index %}static/js/fullcalendar.js"></script>
+<script type='text/javascript'>
+
+	$(document).ready(function() {
+	
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		var calendar = $('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: ''
+			},
+			events: "/calendar/0",
+			defaultView: 'agendaWeek',
+			selectable: true,
+			selectHelper: true,
+			select: function(start, end, allDay) {
+				calendar.fullCalendar('renderEvent', {
+						title: '',
+						start: start,
+						end: end,
+						allDay: allDay
+					},
+					false // make the event "stick"
+				);
+				calendar.fullCalendar('unselect');
+			},
+			editable: true,
+/*
+			eventDrop: function( event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view ) { 
+				saveCalendarEvent(event);
+			},
+			eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) { 
+				saveCalendarEvent(event);
+			}*/
+		});
+		
+	});
+
+	function saveCalendarEvent(event) {
+		var eventData = {
+			start: $.fullCalendar.formatDate(event.start, "yyyy-MM-ddTHH:mm:ss"),
+			end: $.fullCalendar.formatDate(event.end, "yyyy-MM-ddTHH:mm:ss"),
+			id: event.id,
+			title: event.title,
+			allDay: event.allDay,
+			csrfmiddlewaretoken: "{{ csrf_token }}"
+		};
+		retval = $.ajax("/calendar/0", {async: false, dataType: "json", type: "POST", data: eventData});
+		return retval;
+	}
+
+</script>
+{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+	<fieldset>
+		<h3>Repeating</h3>
+		<input type="checkbox" name="weekly" id="weekly"/>
+		<label for="weekly">Weekly</label>
+
+		<input type="checkbox" name="montly" id="monthly"/>
+		<label for="monthly">Monthly</label>
+	</fieldset>	
+	<fieldset>
+		<h3>Event details</h3>
+		<label for="name">Event name</label>
+		<input type="text" name="name" id="name"/>
+
+		<label for="address">Address</label>
+		<input type="text" name="address" id="address"/>
+
+		
+	</fieldset>
+</form>
+<div id="calendar"></div>
+
+{% endblock %}

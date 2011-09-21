@@ -127,7 +127,7 @@ class BaseView(object):
         self.context["errors"] = self.errors
         self.context["warnings"] = self.warnings
         self.context["user"] = self.get_user()
-        environment = "mobile" if self._request.mobile else "mobile"
+        environment = "mobile" if self._request.mobile else "desktop"
         self.context["layout"] = "layout/%s.html" % environment
         
         t = loader.get_template(self.template)

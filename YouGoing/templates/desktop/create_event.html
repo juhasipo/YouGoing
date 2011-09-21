@@ -1,0 +1,51 @@
+{% extends layout %}
+{% load i18n %}
+
+{% block scripts %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		var enventTypeDiv = $('#event_type')
+		$('.event-type').hide();
+		$('#event_type1_set').show();
+		$('#event_type').buttonset();
+		$('input', enventTypeDiv).change(function(event){
+			var radio = $(this);
+			var id = radio.attr('id');
+			var relatedSet = $('#' + id + '_set');
+			$('.event-type').hide();
+			relatedSet.show();
+		});
+	});
+</script>
+{% endblock %}
+
+{% block stylesheets%}
+<link href="{% url index %}static/css/smoothness/jquery-ui-1.8.13.custom.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+<form>
+	<fieldset>
+		<h3>Basic info</h3>
+		<input type="text" name="event_name"/>
+		<textarea name="details"></textarea>
+	</fieldset>
+	<div id="event_type">
+		<input type="radio" name="event_type" id="event_type1" checked="checked"/><label for="event_type1">Single Event</label>
+		<input type="radio" name="event_type" id="event_type2"/><label for="event_type2">Recurring Event</label>
+		<input type="radio" name="event_type" id="event_type3"/><label for="event_type3">Poll</label>
+	</div>
+	<fieldset id="event_type1_set" class="event-type">
+		<h3>1</h3>
+		<input type="date" name="start_time"/>
+		<input type="date" name="end_time"/>
+	</fieldset>
+	<fieldset id="event_type2_set" class="event-type">
+		<h3>2</h3>
+	</fieldset>
+	<fieldset id="event_type3_set" class="event-type">
+		<h3>3</h3>
+	</fieldset>
+	<input type="submit" value="Create"/>
+</form>
+{% endblock %}
