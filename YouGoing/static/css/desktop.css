@@ -102,3 +102,11 @@ fieldset input[type="checkbox"], fieldset input[type="radio"] {
 	float: left;
 	clear: left;
 }
+
+
+.header-actions {
+	float: right;
+}
+
+
+

@@ -67,4 +67,51 @@ form ul ul.errorlist {
 	font-family: sans-serif;
 }
 
+.form-actions {
+	clear: both;
+	width: 50%;
+	margin: 0 auto;
+}
+.form-actions input {
+	float: left;
+	height: 50px;
+	width: 125px;
+	clear: both;
+}
+.form-actions.bottom {
+	padding-top: 10px;
+	padding-bottom: 15px;
+}
+
+
+form input[type="button"], form input[type="submit"]{
+	height: 50px;
+	width: 125px;
+	clear: both;
+	float: left;
+}
+
+fieldset label {
+	float: left;
+	clear: left;
+	min-width: 7em;
+	max-width: 10em;
+	text-align: left;
+}
+fieldset label.checkbox {
+	clear: right;
+}
+fieldset input, fieldset select {
+	float: left;
+	clear: right;
+}
+fieldset input[type="checkbox"], fieldset input[type="radio"] {
+	float: left;
+	clear: left;
+}
+
+
+.header-actions {
+	float: right;
+}
 

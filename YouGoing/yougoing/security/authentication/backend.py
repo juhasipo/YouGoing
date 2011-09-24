@@ -3,14 +3,12 @@ Inspired by Monkey-patch SHA-256
 https://gist.github.com/622519
 """
 import hashlib
-import random
-import os
 import settings
 
+from yougoing.utils.security import generate_random_string
 from django.contrib.auth import models as django_models
 from django.contrib.auth.backends import ModelBackend
 
-RANDOM_STRING_ALPHABETS = u"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#&/()=?;:<>_{[]},.-*"
 
 def _hash_password(password,salt):
     """
@@ -48,19 +46,7 @@ def _hash_password(password,salt):
 
     
 def _gen_random_salt():
-    """
-        Generate random salt string
-    """
-    salt_length = random.randint(settings.SALT_MIN_LENGTH, settings.SALT_MAX_LENGTH)
-    try:
-        random_string = u''
-        num_of_chars = len(RANDOM_STRING_ALPHABETS)
-        for c in os.urandom(salt_length):
-            random_string += (RANDOM_STRING_ALPHABETS[ord(c) % num_of_chars])
-        return random_string
-    except NotImplementedError:
-        print "Urandom could not be used"
-        return u''.join(random.choice(RANDOM_STRING_ALPHABETS.letters) for i in xrange(salt_length))
+    return generate_random_string(settings.SALT_MAX_LENGTH, settings.SALT_MIN_LENGTH)
 
 #Override Django's password hashing and setter methods
 def get_hexdigest(algorithm, salt, raw_password):

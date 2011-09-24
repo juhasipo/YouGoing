@@ -21,13 +21,18 @@
 		<div class="page">
 			<div class="header">
 				<h1>YouGoing</h1>
+				<div class="header-actions">
+					{% if user.is_authenticated %}<a href="{% url logout %}">Logout</a>{% endif %}
+				</div>
+				<br class="clear"/>
 			</div>
+			
 			<div class="content">
 			{% block content %}
 			{% endblock %}
 			</div>
 			<div class="footer">
-				Copyright &copy; YouGoing 2011
+				Copyright &copy; YouGoing Mobile 2011
 			</div>
 		</div>
 	</body>

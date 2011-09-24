@@ -24,11 +24,22 @@
 {% endblock %}
 
 {% block content %}
-<form>
+<form action="{% url new_event %}" method="post">
+	{% csrf_token %}
+	<fieldset>
+		{{ form }}
+	</fieldset>
 	<fieldset>
 		<h3>Basic info</h3>
+		<label>Name</label>
 		<input type="text" name="event_name"/>
+		
+		<label>Description</label>
 		<textarea name="details"></textarea>
+		<br class="clear"/>
+		
+		<input id="is-public" type="checkbox" name="is_public"/>
+		<label for="is-public">Is public</label>
 	</fieldset>
 	<div id="event_type">
 		<input type="radio" name="event_type" id="event_type1" checked="checked"/><label for="event_type1">Single Event</label>

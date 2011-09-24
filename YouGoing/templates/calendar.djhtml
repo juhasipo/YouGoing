@@ -1,4 +1,4 @@
-{% extends "layout/desktop.html" %}
+{% extends "layout/desktop.djhtml" %}
 {% load i18n %}
 
 {% block stylesheets%}

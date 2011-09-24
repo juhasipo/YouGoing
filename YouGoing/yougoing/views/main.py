@@ -9,7 +9,6 @@ class MainView(BaseView):
     login_required = ["GET", "POST"]
     
     def get(self, request, event_name = "New event"):
-        print self.get_user().username
         if request.mobile:
             prefix = "mobile/"
         else:

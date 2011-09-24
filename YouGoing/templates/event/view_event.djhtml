@@ -1,0 +1,7 @@
+{% extends "layout/desktop.djhtml" %}
+{% load i18n %}
+
+{% block content %}
+<h1>Event - {{ event.name}}</h1>
+<a href="{% url view_event event_id=event.id secret_key=event.secret_key %}">Link to this event</a>
+{% endblock %}

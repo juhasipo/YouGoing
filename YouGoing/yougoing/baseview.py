@@ -9,7 +9,6 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseServerEr
 from django.template import RequestContext, loader
 import settings
 from yougoing.utils.exceptions import ForbiddenView
-from yougoing.utils.security import get_logged_in_user
 from django.contrib import messages
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
@@ -62,7 +61,7 @@ class BaseView(object):
             has logged in.
         """
         self._request = request
-        self._user = get_logged_in_user(request)
+        self._user = request.user
         try:
             if hasattr(self, "login_required") and request.method in self.login_required:
                 if not request.user.is_authenticated():
@@ -86,7 +85,7 @@ class BaseView(object):
                 request.session['redirect_after_login'] = request.build_absolute_uri()
                 return self.redirect_to_view("login")
             else:
-                return self.render_template(template='error.html',  \
+                return self.render_template(template='error.djhtml',  \
                                         context={}, \
                                         response=HttpResponseServerError, \
                                         errors=[_("Forbidden")])
@@ -95,7 +94,7 @@ class BaseView(object):
             if settings.DEBUG:
                 raise
             # Else just show an error page
-            return self.render_template(template='error.html',  \
+            return self.render_template(template='error.djhtml',  \
                                         context={}, \
                                         response=HttpResponseServerError, \
                                         errors=[unicode(e)])
@@ -121,6 +120,9 @@ class BaseView(object):
         if not hasattr(self, "template"):
             raise Exception("No template set")
         
+        if not hasattr(self, "use_env_template"):
+            self.use_env_template = False
+        
         if not hasattr(self, "response") == None:
             self.response = HttpResponse
         
@@ -128,7 +130,9 @@ class BaseView(object):
         self.context["warnings"] = self.warnings
         self.context["user"] = self.get_user()
         environment = "mobile" if self._request.mobile else "desktop"
-        self.context["layout"] = "layout/%s.html" % environment
+        self.context["layout"] = "layout/%s.djhtml" % environment
+        if self.use_env_template:
+            self.template = "%s/%s" % (environment, self.template)
         
         t = loader.get_template(self.template)
         self.context.update(csrf(self._request))
