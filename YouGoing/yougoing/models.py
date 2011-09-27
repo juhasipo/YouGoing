@@ -66,6 +66,16 @@ FRIDAY = 4
 SATURDAY = 5
 SUNDAY = 6
 
+REPEAT_CHOISES = (
+    (MONDAY, "Monday"),
+    (TUESDAY, "Tuesday"),
+    (WEDNESDAY, "Wednesday"),
+    (THURSDAY, "Thursday"),
+    (FRIDAY, "Friday"),
+    (SATURDAY, "Saturday"),
+    (SUNDAY, "Sunday"),
+)
+
 class SubEvent(models.Model):
     # First datetime event occures
     start_date = models.DateField()

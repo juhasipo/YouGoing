@@ -23,7 +23,7 @@ urlpatterns = patterns('',
     url(r'^calendar/$', calendar.CalendarView, name="calendar"),
     url(r'^calendar/(?P<id>\d+)$', calendar.CalendarEventsView, name="calendar_events"),
     url(r'^event/new$', events.CreateEventView, name="new_event"),
-    url(r'^event/answer/(?P<event_id>\d+)/(?P<secret_key>\w*)'),
+    url(r'^event/answer/(?P<event_id>\d+)/(?P<secret_key>\w*)', main.MainView, name="answer_event"),
     url(r'^event/(?P<event_id>\d+)/(?P<secret_key>\w*)$', events.EventView, name="view_event"),
     
     # User management

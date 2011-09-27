@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block scripts %}
+<script type="text/javascript" src="{% url index %}/static/js/toggleToEdit.js></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		var enventTypeDiv = $('#event_type')
@@ -15,6 +16,7 @@
 			$('.event-type').hide();
 			relatedSet.show();
 		});
+		$('#event-form').toggleToEdit();
 	});
 </script>
 {% endblock %}
@@ -24,7 +26,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="{% url new_event %}" method="post">
+<form id="event-form" action="{% url new_event %}" method="post">
 	{% csrf_token %}
 	<fieldset>
 		{{ form }}
