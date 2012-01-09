@@ -3,6 +3,18 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from yougoing.utils.security import generate_random_string
 from datetime import datetime, date, time
+from django.db.models.fields.related import ForeignKey
+    
+def map_values(model, initial=None):
+    if initial == None:
+        initial = {}
+    for field_name in model._meta.get_all_field_names():
+        field = model._meta.get_field(field_name)
+        value = field.value_to_string(model)
+        initial[field_name] = value
+        print "%s: %s" % (field_name, value)
+    return initial
+
     
 PARTICIPATION_YES = 1
 PARTICIPATION_MAYBE = 2
@@ -47,17 +59,20 @@ class SubEventInstance(models.Model):
             participation.save()
             self.participants.add(participation)
             self.save()
-            
+
+REPEAT_NONE = 0           
 REPEAT_WEEKLY = 1
 REPEAT_MONTHLY = 2
 REPEAT_ANNUALLY = 3
 
 REPEAT_CHOISES = (
+    (REPEAT_NONE, "No repearing"),
     (REPEAT_WEEKLY, "Weekly"),
     (REPEAT_MONTHLY, "Monthly"),
     (REPEAT_ANNUALLY, "Annually"),
 )
 
+NONEDAY = 10
 MONDAY = 0
 TUESDAY = 1
 WEDNESDAY = 2
@@ -67,6 +82,7 @@ SATURDAY = 5
 SUNDAY = 6
 
 REPEAT_CHOISES = (
+    (NONEDAY, "No repeat"),
     (MONDAY, "Monday"),
     (TUESDAY, "Tuesday"),
     (WEDNESDAY, "Wednesday"),
@@ -85,7 +101,7 @@ class SubEvent(models.Model):
     end_time = models.TimeField()
     #repeat_times = models.IntegerField()
     repeat_type = models.IntegerField()
-    day_of_week = models.IntegerField()
+    day_of_week = models.IntegerField(blank=True, null=True)
     linked_subevents = models.ManyToManyField("self")
     instances = models.ManyToManyField(SubEventInstance)
     
@@ -128,6 +144,24 @@ class Event(models.Model):
     event_poll = models.ForeignKey(EventPoll, blank=True, null=True)
 
     @staticmethod
+    def get_user_events(user):
+        return Event.objects.filter(creator=user)
+
+    def event_to_dict(self):
+        d = {}
+        d["name"] = self.name
+        d["description"] = self.details.description
+        d["address"] = self.details.address
+        d["coordinate"] = self.details.coordinate
+        d["secrey_key"] = self.secret_key
+        d["is_public"] = self.is_public
+        d["start_date"] = self.sub_events.all()[0].start_date
+        d["start_time"] = self.sub_events.all()[0].start_time
+        d["end_date"] = self.sub_events.all()[0].end_date
+        d["end_time"] = self.sub_events.all()[0].end_time
+        return d
+
+    @staticmethod
     def get_event(event_id, user, secret_key):
         try:
             event = Event.objects.get(id=event_id)
@@ -138,14 +172,36 @@ class Event(models.Model):
         return None
     
     @staticmethod
-    def create_event(creator, name, is_public):
+    def create_event(creator, form):
+        name = form.cleaned_data["name"]
+        print "Creating new event with name %s" % name
         event = Event(creator=creator, name=name)
-        details = EventDetails()
+        details = EventDetails(address=form.cleaned_data["address"],\
+                               description=form.cleaned_data["description"],\
+                               coordinate=form.cleaned_data["coordinates"])
         details.save()
+        
         event.details = details
         event.secret_key = generate_random_string(12, 12, True)
         event.save()
+        
+        sub_event_args = Event.get_values_from_form(["start_date", "start_time", "end_date", "end_time"], form)
+        sub_event_args["repeat_type"] = REPEAT_NONE
+        sub_event_args["day_of_week"] = NONEDAY
+        sub_event = SubEvent(**sub_event_args)
+        sub_event.save()
+        event.sub_events.add(sub_event)
+        sub_event.save()
+        
         return event
+    
+    @staticmethod
+    def get_values_from_form(values, form):
+        kwargs = {}
+        for value in values:
+            cd = form.cleaned_data[value]
+            kwargs[value] = cd
+        return kwargs
     
 
     def get_next_event(self):

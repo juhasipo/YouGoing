@@ -9,3 +9,11 @@ div.header {
 div.footer {
 	border-top: solid black 1px;
 }
+
+a.enabled {
+	color: blue;
+}
+
+a.disabled {
+	color: gray;
+}

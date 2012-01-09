@@ -116,13 +116,13 @@ class BaseView(object):
     
     def handle_response(self):
         if hasattr(self, "redirect_to") and self.redirect_to != None:
+            print "Redirecting to %s" % self.redirect_to
             return HttpResponseRedirect(self.redirect_to)
+
         if not hasattr(self, "template"):
             raise Exception("No template set")
-        
         if not hasattr(self, "use_env_template"):
             self.use_env_template = False
-        
         if not hasattr(self, "response") == None:
             self.response = HttpResponse
         
@@ -160,8 +160,8 @@ class BaseView(object):
         else:
             return response(t.render(c))
         
-    def redirect(self, to):
-        return HttpResponseRedirect(to)
+    def redirect(self, view, **kwargs):
+        self.redirect_to = reverse(view, None, None, kwargs)
     
     def redirect_to_view(self, view, args = None, kwargs = None):
         return HttpResponseRedirect(reverse(view, None, args, kwargs))

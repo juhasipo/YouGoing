@@ -1,7 +1,42 @@
 {% extends "layout/desktop.djhtml" %}
 {% load i18n %}
 
+{% block scripts %}
+<script type="text/javascript" src="{% url index %}static/js/toggleToEdit.js"></script>
+<script type="text/javascript" src="{% url index %}static/js/checkIfEdited.js"></script>
+<script type="text/javascript">
+	$().ready(function() {
+		$("#detail-tabs").tabs({ /*disabled: [1, 2]*/ });
+		$('#event-form-basic').toggleToEdit({
+			linkElement: $("#event-form-basic a")
+		});
+		$("#id_start_date").datepicker({
+			showOn: "both",
+			buttonImage: "images/calendar.gif"
+		});
+		$("#id_end_date").datepicker({
+			showOn: "both",
+			buttonImage: "images/calendar.gif"
+		});
+		$('#detail-tabs-1').toggleToEdit({
+			linkElement: $("#detail-tabs-1 a")
+		});
+	});
+</script>
+{% endblock %}
+
+{% block stylesheets%}
+<link href="{% url index %}static/css/smoothness/jquery-ui-1.8.13.custom.css" rel="stylesheet"/>
+{% endblock %}
+
 {% block content %}
-<h1>Event - {{ event.name}}</h1>
-<a href="{% url view_event event_id=event.id secret_key=event.secret_key %}">Link to this event</a>
+
+<div id="event-form-basic'">
+	<h1>Event - {{ event.name}}</h1>
+	<form id="event-form" action="{% url edit_event event_id=event.id %}" method="post">
+		{% include "event/event_form.djhtml" with form=form %}
+		<input type="submit" value="Edit"/>
+	</form>
+	<a href="{% url view_event event_id=event.id secret_key=event.secret_key %}">Link to this event</a>
+</div>
 {% endblock %}

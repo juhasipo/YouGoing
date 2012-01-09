@@ -12,4 +12,13 @@
 <p>
 	Welcome to YouGoing {{ user.username }}
 </p>
+<p>
+	{% for event in user_events %}
+	<a href="{% url view_event event_id=event.id secret_key=event.secret_key %}">{{ event.name }}</a><br/>
+	{% endfor %}
+</p>
+<p>
+	Start by creating <a href="{% url new_event %}">new event</a>.
+	
+</p>
 {% endblock %}
